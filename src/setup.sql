@@ -160,3 +160,62 @@ VALUES
     'Oshodi, Lagos',
     '2026-08-10'
 );
+
+CREATE TABLE categories (
+    category_id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);
+
+CREATE TABLE project_categories (
+    project_id INTEGER NOT NULL,
+    category_id INTEGER NOT NULL,
+
+    PRIMARY KEY (project_id, category_id),
+
+    FOREIGN KEY (project_id)
+        REFERENCES projects(project_id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (category_id)
+        REFERENCES categories(category_id)
+        ON DELETE CASCADE
+);
+
+INSERT INTO categories (name) VALUES
+('Community Development'),
+('Sustainability'),
+('Education'),
+('Healthcare'),
+('Volunteer Services');
+
+INSERT INTO project_categories (project_id, category_id) VALUES
+(1, 1),
+(1, 5),
+
+(2, 1),
+
+(3, 3),
+
+(4, 4),
+
+(5, 3),
+
+(6, 2),
+
+(7, 2),
+
+(8, 3),
+
+(9, 2),
+
+(10, 2),
+
+(11, 5),
+
+(12, 5),
+
+(13, 4),
+
+(14, 3),
+
+(15, 5);

@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "nodemon --env-file=src/.env src/server.js",
-    "start": "node --env-file=src/.env src/server.js"
+    "start": "node src/server.js"
   },
   "author": "",
   "license": "ISC",

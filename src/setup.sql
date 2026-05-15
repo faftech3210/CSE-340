@@ -1,0 +1,162 @@
+CREATE TABLE organizations (
+    organization_id SERIAL PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    contact_email VARCHAR(255) NOT NULL,
+    logo_filename VARCHAR(255) NOT NULL
+);
+
+INSERT INTO organizations (name, description, contact_email, logo_filename)
+VALUES
+(
+    'BrightFuture Builders',
+    'A nonprofit focused on improving community infrastructure through sustainable construction projects.',
+    'info@brightfuturebuilders.org',
+    'brightfuture-logo.png'
+),
+(
+    'GreenHarvest Growers',
+    'An urban farming collective promoting food sustainability and education in local neighborhoods.',
+    'contact@greenharvest.org',
+    'greenharvest-logo.png'
+),
+(
+    'UnityServe Volunteers',
+    'A volunteer coordination group supporting local charities and service initiatives.',
+    'hello@unityserve.org',
+    'unityserve-logo.png'
+);
+
+CREATE TABLE projects (
+    project_id SERIAL PRIMARY KEY,
+    organization_id INTEGER NOT NULL,
+    title VARCHAR(100) NOT NULL,
+    description TEXT NOT NULL,
+    location VARCHAR(100) NOT NULL,
+    project_date DATE NOT NULL,
+
+    CONSTRAINT fk_organization
+        FOREIGN KEY (organization_id)
+        REFERENCES organizations(organization_id)
+        ON DELETE CASCADE
+);
+
+INSERT INTO projects (
+    organization_id,
+    title,
+    description,
+    location,
+    project_date
+)
+VALUES
+
+-- BrightFuture Builders Projects
+(
+    1,
+    'Community Playground Renovation',
+    'Renovating playground equipment and improving safety features for children.',
+    'Lagos Community Park',
+    '2026-06-10'
+),
+(
+    1,
+    'Affordable Housing Repair Initiative',
+    'Repairing roofs, windows, and walls for low-income families.',
+    'Ikeja, Lagos',
+    '2026-06-18'
+),
+(
+    1,
+    'Public Library Expansion',
+    'Constructing additional reading and study spaces for students.',
+    'Surulere, Lagos',
+    '2026-07-02'
+),
+(
+    1,
+    'Community Health Center Upgrade',
+    'Improving accessibility and facilities at a local health center.',
+    'Yaba, Lagos',
+    '2026-07-15'
+),
+(
+    1,
+    'School Classroom Construction',
+    'Building new classrooms for overcrowded primary schools.',
+    'Badagry, Lagos',
+    '2026-08-05'
+),
+
+-- GreenHarvest Growers Projects
+(
+    2,
+    'Urban Rooftop Garden Program',
+    'Creating rooftop vegetable gardens for sustainable food production.',
+    'Victoria Island, Lagos',
+    '2026-06-12'
+),
+(
+    2,
+    'Community Compost Training',
+    'Teaching residents how to create and use organic compost effectively.',
+    'Lekki, Lagos',
+    '2026-06-22'
+),
+(
+    2,
+    'Neighborhood Greenhouse Project',
+    'Building a greenhouse to support year-round vegetable farming.',
+    'Ajah, Lagos',
+    '2026-07-08'
+),
+(
+    2,
+    'School Farming Education Workshop',
+    'Educating students about urban agriculture and sustainability.',
+    'Ikorodu, Lagos',
+    '2026-07-20'
+),
+(
+    2,
+    'City Tree and Crop Planting Day',
+    'Organizing volunteers to plant trees and food crops in urban spaces.',
+    'Epe, Lagos',
+    '2026-08-01'
+),
+
+-- UnityServe Volunteers Projects
+(
+    3,
+    'Local Food Bank Assistance',
+    'Coordinating volunteers to package and distribute food supplies.',
+    'Mushin, Lagos',
+    '2026-06-14'
+),
+(
+    3,
+    'Charity Fundraising Walk',
+    'Hosting a fundraising walk to support local nonprofit organizations.',
+    'Lekki Conservation Area',
+    '2026-06-28'
+),
+(
+    3,
+    'Senior Citizen Support Visit',
+    'Providing companionship and assistance to elderly community members.',
+    'Agege, Lagos',
+    '2026-07-05'
+),
+(
+    3,
+    'Youth Mentorship Program',
+    'Connecting volunteers with teenagers for educational mentorship.',
+    'Festac Town, Lagos',
+    '2026-07-18'
+),
+(
+    3,
+    'Community Donation Drive',
+    'Collecting clothing, books, and supplies for families in need.',
+    'Oshodi, Lagos',
+    '2026-08-10'
+);

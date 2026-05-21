@@ -1,20 +1,45 @@
 <%- include('partials/header') %>
+
 <main>
+
     <h1><%= title %></h1>
-    <ul>
+
+    <div class="projects-container">
+
         <% projects.forEach(project => { %>
-            <li>
-                <strong>
+
+            <div class="project-card">
+
+                <h2>
+                    <a href="/project/<%= project.project_id %>">
+                        <%= project.title %>
+                    </a>
+                </h2>
+
+                <p>
+                    <strong>Organization:</strong>
+
+                    <a href="/organization/<%= project.organization_id %>">
+                        <%= project.organization_name %>
+                    </a>
+                </p>
+
+                <p>
+                    <strong>Date:</strong>
                     <%= new Date(project.project_date).toLocaleDateString() %>
-                </strong>
-                :
-                <%= project.title %>
-                (
-                <%= project.organization_name %>
-                )
-            </li>
+                </p>
+
+                <p>
+                    <strong>Location:</strong>
+                    <%= project.location %>
+                </p>
+
+            </div>
+
         <% }) %>
-    </ul>
+
+    </div>
+
 </main>
 
 <%- include('partials/footer') %>

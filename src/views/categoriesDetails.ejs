@@ -2,11 +2,13 @@
 
 <h1><%= title %></h1>
 
+<h2>Service Projects</h2>
+
 <ul>
-    <% categories.forEach(category => { %>
+    <% projects.forEach(project => { %>
         <li>
-            <a href="/categories/<%= category.category_id %>">
-                <%= category.name %>
+            <a href="/project/<%= project.project_id %>">
+                <%= project.title %>
             </a>
         </li>
     <% }) %>

@@ -1,5 +1,13 @@
 // Import model functions
-import { getAllProjects, getUpcomingProjects, getProjectDetails } from '../models/projects.js';
+import { getAllProjects,
+    getProjectsByOrganizationId,
+    getUpcomingProjects,
+    getProjectDetails,
+    getCategoriesByProjectId,
+    getProjectsByCategoryId } from '../models/projects.js';
+import {
+    getOrganizationByProjectId
+} from "../models/organizations.js";
 
 const NUMBER_OF_UPCOMING_PROJECTS = 5;
 
@@ -16,21 +24,36 @@ const showProjectsPage = async (req, res) => {
     })
 }
 
-const showProjectDetailsPage = async (req, res) => {
 
-    const id = req.params.id
+/* ***************************
+ * Build project detail page
+ * ************************** */
+const showProjectDetailsPage = async (req, res, next) => {
+    const projectId = parseInt(req.params.id)
+    const title = 'Service Project Details'
 
-    const project = await getProjectDetails(id)
-
-    const title = project.title
+    const project =
+        await getProjectDetails(projectId)
 
     if (!project) {
-        return res.status(404).send('Project not found')
+        const error = new Error("Project not found")
+
+        error.status = 404
+
+        return next(error)
     }
 
-    res.render('project', {
+    const organization =
+        await getOrganizationByProjectId(projectId)
+
+    const categories =
+        await getCategoriesByProjectId(projectId)
+
+    res.render("project", {
         title,
-        project
+        project,
+        organization,
+        categories
     })
 }
 

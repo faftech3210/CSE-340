@@ -1,9 +1,14 @@
 <%- include("./partials/header") %>
 
 <h1><%= title %></h1>
+<hr>
+<h3>Project Summary:</h3>
 
-<p><%= project.summary %></p>
+<p><strong>Project Title:</strong> <%= project.title %></p>
+<p><strong>Project Description:</strong> <%= project.description %></p>
 
+<p>📍 <strong>Location:</strong> <%= project.location %></p>
+<p>📅 <strong>Date:</strong> <%= project.project_date %></p>
 <p>
     Organization:
     <a href="/organization/<%= organization.organization_id %>">
@@ -11,6 +16,13 @@
     </a>
 </p>
 
+<dev class="edit-project">
+    <a href="/edit-project/<%= project.project_id %>" class="btn-edit">
+        ✏️ Edit Service Project
+    </a>
+</dev>
+
+<hr>
 <h3>Categories</h3>
 
 <div class="category-tags">
@@ -23,5 +35,12 @@
         </a>
     <% }) %>
 </div>
-<a href="/assign-categories/<%= project.project_id %>">Edit Categories</a>
+
+<div>
+    <a href="/assign-categories/<%= project.project_id %>" class="btn-edit">
+        ✏️ Assign Categories Name
+    </a>
+    
+</div>
+
 <%- include("./partials/footer") %>

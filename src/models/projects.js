@@ -160,6 +160,35 @@ const getProjectsByCategoryId = async (categoryId) => {
     return result.rows
 }
 
+/**
+ * Update an existing service project in the database
+ */
+const updateProject = async (projectId, title, description, location, project_date, organizationId) => {
+    const sql = `
+        UPDATE projects 
+        SET title = $1, 
+            description = $2, 
+            location = $3, 
+            project_date = $4, 
+            organization_id = $5 
+        WHERE project_id = $6
+        RETURNING project_id;
+    `;
+    
+    try {
+        const result = await db.query(sql, [title, description, location, project_date, organizationId, projectId]);
+        
+        if (result.rows.length === 0) {
+            throw new Error(`Update failed: Project ID ${projectId} not found.`);
+        }
+        
+        return result.rows[0].project_id;
+    } catch (error) {
+        console.error("Database error in updateProject:", error);
+        throw error;
+    }
+};
+
 export {
     getAllProjects,
     getProjectsByOrganizationId,
@@ -167,5 +196,6 @@ export {
     getProjectDetails,
     getCategoriesByProjectId,
     getProjectsByCategoryId,
-    createProject
+    createProject,
+    updateProject
 }

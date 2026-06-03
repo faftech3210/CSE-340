@@ -1,8 +1,16 @@
 <%- include("./partials/header") %>
 
-<h1 class="category-title">Service Categories</h1>
+<h1 class="category-title">Service Categories Details </h1>
 
-<h2 class="detailh2">Service Projects</h2>
+<div class="renamecate">
+    <h2>Category: <%= category.name %></h2>
+
+    <a href="/edit-category/<%= category.category_id %>">
+        ✏️ Rename This Category
+    </a>
+</div>
+
+<h3 class="detailh2" >Associated Projects</h3>
 
 <ul class="cati-ul">
     <% projects.forEach(project => { %>

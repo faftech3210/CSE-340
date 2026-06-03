@@ -60,32 +60,26 @@ nav a:hover::after {
     width: 100%;
 }
 
-/* Flash message styles */
+/* Container for the alert box */
 .alert {
-    padding: 15px;
-    margin-bottom: 20px 10px;
-    border: 1px solid transparent;
+    padding: 1rem;
+    margin: 1rem 0;
     border-radius: 4px;
+    font-weight: 500;
 }
-.alert.success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+
+/* Red Error Alert Box */
+.alert.error, .error-message, .alert-danger {
+    background-color: #fde8e8 !important;
+    color: #9b1c1c !important;
+    border: 1px solid #f8b4b4 !important;
 }
-.alert.error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-}
-.alert.warning {
-    color: #856404;
-    background-color: #fff3cd;
-    border-color: #ffeeba;
-}
-.alert.info {
-    color: #0c5460;
-    background-color: #d1ecf1;
-    border-color: #bee5eb;
+
+/* Green Success Alert Box */
+.alert.success, .success-message, .alert-success {
+    background-color: #def7ec !important;
+    color: #03543f !important;
+    border: 1px solid #bcf0da !important;
 }
 
 /* MAIN CONTAINER */
@@ -114,9 +108,13 @@ h1, main h1 {
 }
 
 h2 {
-    font-size: 1.4rem;
+    font-size: 1.1rem;
     color: #4b5563;
     margin-bottom: 1rem;
+}
+
+main h2 {
+    font-size: 1rem;
 }
 
 /* PARAGRAPH */
@@ -142,9 +140,32 @@ main li {
     padding-left: 3.5rem;
 }
 
+.renamecate {
+    display: block;
+    margin-bottom: 2.5rem;
+}
+
+.renamecate h2 {
+    margin-left: 2rem;
+    margin-bottom: 0;            /* Removes the default bulky browser margins from the heading */
+}
+
+.renamecate a {
+    text-decoration: none;
+    font-size: 0.9rem;
+    color: #2563eb;
+    font-weight: 600;
+    margin-left: 2rem;
+    margin-top: 0;
+}
+
 .detailh2{
     padding-left: 3.5rem;
-};
+}
+
+.addcat a {
+    padding-left: 10rem;
+}
 
 /* IMAGE */
 .main-logo {

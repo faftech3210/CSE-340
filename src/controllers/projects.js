@@ -5,7 +5,7 @@ import { getAllProjects,
     getProjectDetails,
     getCategoriesByProjectId,
     getProjectsByCategoryId,
-    createProject,
+    createProject, updateProject
  } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 import { getOrganizationByProjectId, getAllOrganizations } from "../models/organizations.js";
@@ -114,11 +114,62 @@ const showProjectDetailsPage = async (req, res, next) => {
     })
 }
 
+/**
+ * Render the Edit Project Form populated with current data
+ */
+const showEditProjectForm = async (req, res, next) => {
+    const projectId = parseInt(req.params.id);
+
+    try {
+        const project = await getProjectDetails(projectId);
+        const organizations = await getAllOrganizations();
+
+        if (!project) {
+            const error = new Error("Project not found");
+            error.status = 404;
+            return next(error);
+        }
+
+        const title = `Edit Project: ${project.title}`;
+        
+        res.render('update-project', { 
+            title, 
+            project, 
+            organizations 
+        });
+    } catch (error) {
+        console.error("Error in showEditProjectForm:", error);
+        req.flash('error', 'Error loading the edit form.');
+        res.redirect('/projects');
+    }
+};
+
+/**
+ * Handle incoming form edits and commit them to the database
+ */
+const processEditProjectForm = async (req, res) => {
+    const projectId = parseInt(req.params.id);
+    const { title, description, location, project_date, organizationId } = req.body;
+
+    try {
+        await updateProject(projectId, title, description, location, project_date, organizationId);
+        
+        req.flash('success', 'Project updated successfully!');
+        res.redirect(`/project/${projectId}`);
+    } catch (error) {
+        console.error("Error in processEditProjectForm:", error);
+        req.flash('error', 'Failed to update project details.');
+        res.redirect(`/edit-project/${projectId}`);
+    }
+};
+
 // Export controller functions
 export { 
 showProjectsPage,   
 showProjectDetailsPage, 
 processNewProjectForm, 
 showNewProjectForm, 
-projectValidation
+projectValidation,
+showEditProjectForm,
+processEditProjectForm
 };

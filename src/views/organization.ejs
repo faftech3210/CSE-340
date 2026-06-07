@@ -17,6 +17,10 @@
     <% } else { %>
     <p><em>No active service projects found for this organization yet.</em></p>
     <% } %>
-    <p><a href="/edit-organization/<%= organizationDetails.organization_id %>">Edit Organization</a></p>
+    <p>
+        <% if (user && user.role_name === 'admin') { %>
+            <a href="/edit-organization/<%= organizationDetails.organization_id %>" class="btn btn-edit">Edit Organization</a>
+        <% } %>
+    </p>
 </main>
 <%- include('partials/footer') %>

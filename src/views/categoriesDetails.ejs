@@ -4,10 +4,11 @@
 
 <div class="renamecate">
     <h2>Category: <%= category.name %></h2>
-
-    <a href="/edit-category/<%= category.category_id %>">
-        ✏️ Rename This Category
-    </a>
+    <% if (user && user.role_name === 'admin') { %>
+        <a href="/edit-category/<%= category.category_id %>">
+            ✏️ Rename This Category
+        </a>
+    <% } %>
 </div>
 
 <h3 class="detailh2" >Associated Projects</h3>

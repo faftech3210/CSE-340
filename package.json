@@ -5,12 +5,13 @@
   "main": "server.js",
   "type": "module",
   "scripts": {
-    "dev": "nodemon --env-file=src/.env src/server.js",
+    "dev": "nodemon --exec \"node --env-file=src/.env\" src/server.js",
     "start": "node src/server.js"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "ejs": "^5.0.2",
     "express": "^5.2.1",
     "express-session": "^1.19.0",

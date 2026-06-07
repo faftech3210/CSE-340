@@ -12,6 +12,8 @@
     <% }) %>
 </ul>
 <dev class="addcat">
-    <li><a href="/new-category"> Add New Category</a></li>
+    <% if (user && user.role_name === 'admin') { %>
+        <li><a href="/new-category">Add New Category</a></li>
+    <% } %>
 </dev>
 <%- include("./partials/footer") %>

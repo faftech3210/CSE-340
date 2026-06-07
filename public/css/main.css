@@ -1,19 +1,25 @@
-/* Reset */
+/* ==========================================================================
+   1. RESET & BASE
+   ========================================================================== */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
-/* Base */
 body {
     font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
     background: #f4f6fb;
     color: #1f2937;
     line-height: 1.6;
+    display: flex;
+    flex-direction: column;
+    min-height: 1000px; /* Kept to retain layout structure, using min-height so it expands */
 }
 
-/* NAVBAR */
+/* ==========================================================================
+   2. NAVIGATION (NAVBAR)
+   ========================================================================== */
 nav {
     background: #111827;
     padding: 1rem 2rem;
@@ -26,9 +32,10 @@ nav {
 nav ul {
     display: flex;
     justify-content: center;
+    align-items: center;
     gap: 3rem;
     list-style: none;
-    flex-wrap: wrap;
+    flex-wrap: nowrap; /* Prevents text from wrapping into awkward lines */
 }
 
 nav a {
@@ -37,6 +44,7 @@ nav a {
     font-weight: 600;
     position: relative;
     padding: 0.3rem 0;
+    white-space: nowrap; /* Prevents long titles from splitting up */
     transition: color 0.3s ease;
 }
 
@@ -54,57 +62,36 @@ nav a::after {
 
 nav a:hover {
     color: #38bdf8;
+    text-decoration: none;
 }
 
 nav a:hover::after {
     width: 100%;
 }
 
-/* Container for the alert box */
-.alert {
-    padding: 1rem;
-    margin: 1rem 0;
-    border-radius: 4px;
-    font-weight: 500;
-}
-
-/* Red Error Alert Box */
-.alert.error, .error-message, .alert-danger {
-    background-color: #fde8e8 !important;
-    color: #9b1c1c !important;
-    border: 1px solid #f8b4b4 !important;
-}
-
-/* Green Success Alert Box */
-.alert.success, .success-message, .alert-success {
-    background-color: #def7ec !important;
-    color: #03543f !important;
-    border: 1px solid #bcf0da !important;
-}
-
-/* MAIN CONTAINER */
+/* ==========================================================================
+   3. LAYOUT / MAIN CONTAINER
+   ========================================================================== */
 main {
-    max-width: 1000px;
+    flex: 1;
+    width: 90%; /* Uses fluid width for small viewports */
+    max-width: 700px; /* Consolidated duplicate main elements to this clean default */
     margin: 3rem auto;
     padding: 2rem;
     text-align: center;
     background: #ffffff;
-    border-radius: 12px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.05);
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 }
 
-/* HEADINGS */
+/* ==========================================================================
+   4. COMPONENTS (TYPOGRAPHY, HERO, CARDS, ALERTS)
+   ========================================================================== */
 h1, main h1 {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     margin-bottom: 2rem;
     color: #111827;
     text-align: center;
-}
-
-.category-title {
-    text-align: center;
-    margin-top: 2rem;
-    margin-bottom: 1.5rem;
 }
 
 h2 {
@@ -117,14 +104,84 @@ main h2 {
     font-size: 1rem;
 }
 
-/* PARAGRAPH */
 p {
     font-size: 1.1rem;
     color: #6b7280;
     max-width: 700px;
     margin: 0 auto 1.5rem;
+    text-align: center;
 }
 
+/* Hero Section */
+.landing-hero-container {
+    text-align: center;
+    padding: 3rem 1.5rem;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: #555;
+    margin-bottom: 2rem;
+}
+
+/* Welcome/Auth Cards */
+.auth-welcome-card {
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.welcome-text {
+    font-size: 1.25rem;
+    margin-bottom: 1rem;
+}
+
+.action-links-group {
+    display: flex;
+    flex-wrap: wrap; /* Allows buttons to cleanly stack on tiny screens */
+    gap: 1rem;
+    justify-content: center;
+    margin-top: 1.25rem;
+}
+
+
+
+/* Buttons */
+.btn-action {
+    display: inline-block;
+    padding: 0.6rem 1.2rem;
+    border-radius: 4px;
+    text-decoration: none;
+    font-weight: 500;
+    transition: background 0.2s;
+}
+
+.btn-login, .btn-view {
+    background-color: #2563eb;
+    color: white;
+}
+
+.btn-login:hover, .btn-view:hover {
+    background-color: #1d4ed8;
+}
+
+.btn-logout {
+    background-color: #ef4444;
+    color: white;
+}
+
+.btn-logout:hover {
+    background-color: #dc2626;
+}
+
+/* Lists and Content Categories */
 main ul {
     list-style: none;
     padding: 0;
@@ -136,18 +193,26 @@ main li {
     text-align: left;
 }
 
+.category-title {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 1.5rem;
+}
+
 .cati-ul {
-    padding-left: 3.5rem;
+    padding-left: 5%; /* Fluid percentage padding instead of rigid pixels */
 }
 
 .renamecate {
-    display: block;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 1rem;
     margin-bottom: 2.5rem;
 }
 
 .renamecate h2 {
-    margin-left: 2rem;
-    margin-bottom: 0;            /* Removes the default bulky browser margins from the heading */
+    margin-bottom: 0;
 }
 
 .renamecate a {
@@ -155,22 +220,26 @@ main li {
     font-size: 0.9rem;
     color: #2563eb;
     font-weight: 600;
-    margin-left: 2rem;
-    margin-top: 0;
 }
 
-.detailh2{
-    padding-left: 3.5rem;
+.detailh2 {
+    padding-left: 5%;
+}
+
+.addcat {
+    margin: 1.5rem 0;
+    text-align: center; /* Centers layout instead of utilizing deep left-padding breaking viewports */
 }
 
 .addcat a {
-    padding-left: 10rem;
+    padding-left: 0;
 }
 
-/* IMAGE */
+/* Media/Images */
 .main-logo {
     width: 100%;
     max-width: 420px;
+    height: auto;
     border-radius: 14px;
     margin-top: 1.5rem;
     box-shadow: 0 10px 25px rgba(0,0,0,0.08);
@@ -181,131 +250,154 @@ main li {
     transform: scale(1.03);
 }
 
-/* FOOTER */
+/* Alert Boxes */
+.alert {
+    padding: 1rem;
+    margin: 1rem 0;
+    border-radius: 4px;
+    font-weight: 500;
+}
+
+.alert.error, .error-message, .alert-danger {
+    background-color: #fde8e8 !important;
+    color: #9b1c1c !important;
+    border: 1px solid #f8b4b4 !important;
+}
+
+.alert.success, .success-message, .alert-success {
+    background-color: #def7ec !important;
+    color: #03543f !important;
+    border: 1px solid #bcf0da !important;
+}
+
+/* ==========================================================================
+   5. FORMS
+   ========================================================================== */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    text-align: left; /* Aligns labels cleanly to the left */
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    color: #374151;
+}
+
+input, textarea {
+    width: 100%; /* Ensures input boxes stay constrained inside form wrappers */
+    padding: 0.9rem 1rem;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: #f9fafb;
+}
+
+input:focus, textarea:focus {
+    outline: none;
+    border-color: #2563eb;
+    background: #fff;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
+}
+
+textarea {
+    min-height: 140px;
+    resize: vertical;
+}
+
+button {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    border-radius: 10px;
+    background: #2563eb;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover {
+    background: #1d4ed8; /* Fixed hover to darker blue instead of previous layout gray */
+    transform: translateY(-2px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* ==========================================================================
+   6. FOOTER
+   ========================================================================== */
 footer {
-    margin-top: 3rem;
+    margin-top: auto; /* Pushes footer nicely down to the screen edge */
     padding: 1.5rem;
     text-align: center;
     background: #111827;
     color: #e5e7eb;
+    font-size: 0.9rem;
 }
 
-/* ===== MAIN CONTENT ===== */
-main {
-  flex: 1;
-  width: 100%;
-  max-width: 700px;
-  margin: 3rem auto;
-  padding: 2rem;
-  background: white;
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-}
+/* ==========================================================================
+   7. MEDIA QUERIES (RESPONSIVE ENGINE)
+   ========================================================================== */
 
-/* ===== FORM ===== */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
+/* Medium Screens (Tablets / Small Laptops) */
+@media screen and (max-width: 768px) {
+    nav {
+        padding: 1rem;
+    }
 
-/* ===== FORM GROUP ===== */
-.form-group {
-  display: flex;
-  flex-direction: column;
-}
-
-.form-group label {
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-  color: #374151;
-}
-
-/* ===== INPUTS & TEXTAREA ===== */
-input,
-textarea {
-  padding: 0.9rem 1rem;
-  border: 1px solid #d1d5db;
-  border-radius: 10px;
-  font-size: 1rem;
-  transition: all 0.3s ease;
-  background: #f9fafb;
-}
-
-input:focus,
-textarea:focus {
-  outline: none;
-  border-color: #2563eb;
-  background: #fff;
-  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
-}
-
-textarea {
-  min-height: 140px;
-  resize: vertical;
-}
-
-/* ===== BUTTON ===== */
-button {
-  padding: 1rem;
-  border: none;
-  border-radius: 10px;
-  background: #2563eb;
-  color: white;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-button:hover {
-  background: #ecedf0;
-  transform: translateY(-2px);
-}
-
-button:active {
-  transform: translateY(0);
-}
-
-/* ===== FOOTER ===== */
-footer {
-  text-align: center;
-  padding: 1rem;
-  background: #1f2937;
-  color: #f9fafb;
-  font-size: 0.9rem;
-}
-
-/* ===== RESPONSIVE ===== */
-@media (max-width: 768px) {
-  nav ul {
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  main {
-    margin: 1.5rem;
-    padding: 1.5rem;
-  }
-
-  h1, main h1 {
-    font-size: 1.6rem;
-  }
-}
-
-/* RESPONSIVE */
-@media (max-width: 600px) {
     nav ul {
-        flex-direction: column;
-        gap: 1rem;
+        gap: 1.5rem; /* Safely scales down layout spacing */
     }
 
     main {
-        margin: 1.5rem;
+        margin: 2rem auto;
         padding: 1.5rem;
     }
 
     h1, main h1 {
         font-size: 2rem;
+    }
+}
+
+/* Small Screens (Mobile Phones) */
+@media screen and (max-width: 600px) {
+    nav ul {
+        flex-direction: column; /* Safely transitions nav items to stack vertically */
+        gap: 0.8rem;
+    }
+
+    main {
+        width: 95%;
+        margin: 1rem auto;
+        padding: 1.25rem;
+    }
+
+    h1, main h1 {
+        font-size: 1.6rem;
+    }
+
+    .auth-welcome-card {
+        padding: 1.25rem;
+    }
+
+    .action-links-group {
+        flex-direction: column; /* Vertically aligns action items */
+    }
+
+    .btn-action {
+        width: 100%;
+        text-align: center;
     }
 }

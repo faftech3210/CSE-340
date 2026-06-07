@@ -21,61 +21,93 @@ import {
     processEditCategoryForm,
     categoryValidation 
 } from './controllers/categories.js';
-import { testErrorPage, show500Page, show404Page } from './controllers/errors.js';
-import { showOrganizationsPage, processEditOrganizationForm, showEditOrganizationForm, showOrganizationDetailsPage, showNewOrganizationForm, processNewOrganizationForm, organizationValidation } from './controllers/organizations.js';
+import { 
+    testErrorPage, 
+    show500Page, 
+    show404Page 
+} from './controllers/errors.js';
+import { 
+    showOrganizationsPage, 
+    processEditOrganizationForm, 
+    showEditOrganizationForm, 
+    showOrganizationDetailsPage, 
+    showNewOrganizationForm, 
+    processNewOrganizationForm, 
+    organizationValidation 
+} from './controllers/organizations.js';
+import { 
+    showUserRegistrationForm, 
+    processLoginForm,
+    showLoginForm,
+    processLogout, 
+    processUserRegistrationForm,
+    requireLogin,
+    requireRole,
+    showDashboard 
+} from './controllers/users.js';
 
 const router = express.Router();
 
-// Route for pages rendering
-router.get("/", showHomePage)
-
-router.get("/organizations", showOrganizationsPage)
-router.get("/organization/:id", showOrganizationDetailsPage)
-// Route to handle the edit organization form submission
-router.post('/edit-organization/:id', organizationValidation, processEditOrganizationForm);
-// Route to display the edit organization form
-router.get('/edit-organization/:id', showEditOrganizationForm);
-// Route to handle new organization form submission
-router.post('/new-organization', organizationValidation, processNewOrganizationForm);
+// --- Public / General Routes ---
+router.get("/", showHomePage);
 
 
-router.get("/projects", showProjectsPage)
+// --- Organization Routes ---
+router.get("/organizations", showOrganizationsPage);
+router.get("/organization/:id", showOrganizationDetailsPage);
 
-// Route to handle new project form submission
-router.post('/new-project', projectValidation, processNewProjectForm);
-router.get("/project/:id", showProjectDetailsPage)
+//  Admin Protected: Create New Organization
+router.get('/new-organization', requireRole('admin'), showNewOrganizationForm);
+router.post('/new-organization', requireRole('admin'), organizationValidation, processNewOrganizationForm);
 
-// Route for new project page
-router.get('/new-project', showNewProjectForm);
-// Ensure you add showEditProjectForm and processEditProjectForm to your imports at the top!
-
-// GET Route to display the form with current values filled out
-router.get('/edit-project/:id', showEditProjectForm);
-
-// POST Route to capture data updates
-router.post('/edit-project/:id', processEditProjectForm);
+//  Admin Protected: Edit Existing Organization
+router.get('/edit-organization/:id', requireRole('admin'), showEditOrganizationForm);
+router.post('/edit-organization/:id', requireRole('admin'), organizationValidation, processEditOrganizationForm);
 
 
-router.get("/categories", showCategoriesPage)
-router.get("/categories/:id", showCategoryDetailsPage)
+// --- Project Routes ---
+router.get("/projects", showProjectsPage);
+router.get("/project/:id", showProjectDetailsPage);
 
-// Routes to handle the assign categories to project form
-router.get('/assign-categories/:projectId', showAssignCategoriesForm);
-router.post('/assign-categories/:projectId', processAssignCategoriesForm);
+//  Admin Protected: Create New Project
+router.get('/new-project', requireRole('admin'), showNewProjectForm);
+router.post('/new-project', requireRole('admin'), projectValidation, processNewProjectForm);
 
-// New Category Creation Routes
-router.get('/new-category', showCreateCategoryForm);
-router.post('/new-category', categoryValidation, processCreateCategoryForm);
-
-// Edit Existing Category Routes
-router.get('/edit-category/:id', showEditCategoryForm);
-router.post('/edit-category/:id', categoryValidation, processEditCategoryForm);
+//  Admin Protected: Edit Existing Project
+router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
+router.post('/edit-project/:id', requireRole('admin'), processEditProjectForm);
 
 
-// Route for new organization page
-router.get('/new-organization', showNewOrganizationForm);
+// --- Category Routes ---
+router.get("/categories", showCategoriesPage);
+router.get("/categories/:id", showCategoryDetailsPage);
 
-// error-handling routes
+//  Admin Protected: Assign Categories to Projects
+router.get('/assign-categories/:projectId', requireRole('admin'), showAssignCategoriesForm);
+router.post('/assign-categories/:projectId', requireRole('admin'), processAssignCategoriesForm);
+
+//  Admin Protected: Create New Category
+router.get('/new-category', requireRole('admin'), showCreateCategoryForm);
+router.post('/new-category', requireRole('admin'), categoryValidation, processCreateCategoryForm);
+
+//  Admin Protected: Edit Existing Category
+router.get('/edit-category/:id', requireRole('admin'), showEditCategoryForm);
+router.post('/edit-category/:id', requireRole('admin'), categoryValidation, processEditCategoryForm);
+
+
+// --- User Authentication Routes ---
+router.get('/register', showUserRegistrationForm);
+router.post('/register', processUserRegistrationForm);
+
+router.get('/login', showLoginForm);
+router.post('/login', processLoginForm);
+router.get('/logout', processLogout);
+
+// Protected dashboard route
+router.get('/dashboard', requireLogin, showDashboard);
+
+
+// --- Error Handling Routes ---
 router.get('/test-error', testErrorPage);
 
 export default router;

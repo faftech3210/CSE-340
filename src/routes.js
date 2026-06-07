@@ -75,7 +75,7 @@ router.post('/new-project', requireRole('admin'), projectValidation, processNewP
 
 //  Admin Protected: Edit Existing Project
 router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
-router.post('/edit-project/:id', requireRole('admin'), processEditProjectForm);
+router.post('/edit-project/:id', requireRole('admin'), projectValidation, processEditProjectForm);
 
 
 // --- Category Routes ---

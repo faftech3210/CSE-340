@@ -20,11 +20,11 @@ const projectValidation = [
     body('description')
         .trim()
         .notEmpty().withMessage('Description is required')
-        .isLength({ max: 1000 }).withMessage('Description must be less than 1000 characters'),
+        .isLength({ min: 3, max: 1000 }).withMessage('Description must be between 5 and 1000 characters'),
     body('location')
         .trim()
         .notEmpty().withMessage('Location is required')
-        .isLength({ max: 200 }).withMessage('Location must be less than 200 characters'),
+        .isLength({ min: 3, max: 200 }).withMessage('Location must be 3 and not less than 200 characters'),
     body('project_date')
         .notEmpty().withMessage('Date is required')
         .isISO8601().withMessage('Date must be a valid date format'),
@@ -149,6 +149,14 @@ const showEditProjectForm = async (req, res, next) => {
  */
 const processEditProjectForm = async (req, res) => {
     const projectId = parseInt(req.params.id);
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        errors.array().forEach((error) => {
+            req.flash('error', error.msg);
+        });
+        // Redirect back to the edit form immediately and stop execution
+        return res.redirect(`/edit-project/${projectId}`);
+    }
     const { title, description, location, project_date, organizationId } = req.body;
 
     try {

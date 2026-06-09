@@ -7,6 +7,18 @@
     <p>Welcome: <%= name %> [<%= role_name %>]</p>
     <p>Username: <%= email %></p>
 
+    <hr>
+
+    <% if (role_name === 'admin') { %>
+        <div class="admin-hub">
+            <h3>Administrative Hub</h3>
+            <p>You have authorized access to manage records database systems.</p>
+            <a href="/users" class="btn-admin">
+                Manage Registered Users →
+            </a>
+        </div>
+    <% } %>
+
 </main>
 
 <%- include('partials/footer') %>

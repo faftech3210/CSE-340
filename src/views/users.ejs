@@ -1,0 +1,29 @@
+<%- include('partials/header') %>
+
+    <h1>System User Registry</h1>
+    <p><a href="/dashboard">← Return to Dashboard</a></p>
+
+    <table class="user-table">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Email Address (Username)</th>
+                <th>Assigned System Role</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach(row => { %>
+                <tr>
+                    <td data-label="Full Name"><%= row.name %></td>
+                    <td data-label="Email Address"><%= row.email %></td>
+                    <td data-label="System Role">
+                        <span class="badge <%= row.role_name === 'admin' ? 'badge-admin' : 'badge-user' %>">
+                            <%= row.role_name %>
+                        </span>
+                    </td>
+                </tr>
+            <% }) %>
+        </tbody>
+    </table>
+
+<%- include('partials/footer') %>

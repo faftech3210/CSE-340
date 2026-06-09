@@ -43,7 +43,8 @@ import {
     processUserRegistrationForm,
     requireLogin,
     requireRole,
-    showDashboard 
+    showDashboard,
+    showUsersPage 
 } from './controllers/users.js';
 
 const router = express.Router();
@@ -105,7 +106,13 @@ router.get('/logout', processLogout);
 
 // Protected dashboard route
 router.get('/dashboard', requireLogin, showDashboard);
-
+router.get('/users', requireLogin, (req, res, next) => {
+    if (req.session.user.role_name !== 'admin') {
+        req.flash('error', 'Access Denied: Only administrators may view the user registry.');
+        return res.redirect('/dashboard'); // 👈 Redirects to dashboard specifically
+    }
+    next();
+}, showUsersPage);
 
 // --- Error Handling Routes ---
 router.get('/test-error', testErrorPage);

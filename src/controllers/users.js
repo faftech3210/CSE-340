@@ -1,5 +1,6 @@
 import bcrypt from 'bcrypt';
 import { createUser, authenticateUser } from '../models/users.js';
+import db from '../models/db.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -64,6 +65,31 @@ const processLoginForm = async (req, res) => {
         console.error('Error during login:', error);
         req.flash('error', 'An error occurred during login. Please try again.');
         res.redirect('/login');
+    }
+};
+
+const showUsersPage = async (req, res) => {
+    try {
+        const query = `
+            SELECT 
+                u.name, 
+                u.email, 
+                r.role_name
+            FROM users u
+            JOIN roles r ON u.role_id = r.role_id
+            ORDER BY u.name ASC
+        `;
+        const result = await db.query(query);
+
+        res.render('users', { 
+            title: 'Registered Users',
+            users: result.rows,
+            user: req.session.user // Keeping session context
+        });
+    } catch (error) {
+        console.error('Error fetching users for admin view:', error);
+        req.flash('error', 'Could not retrieve user directory.');
+        res.redirect('/dashboard');
     }
 };
 
@@ -134,5 +160,6 @@ export {
     showLoginForm,
     requireLogin,
     showDashboard,
-    requireRole
+    requireRole,
+    showUsersPage
 };

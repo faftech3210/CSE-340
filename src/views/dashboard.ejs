@@ -4,8 +4,9 @@
     <h1><%= title %></h1>
 
     <h2>User Information</h2>
-    <p>Welcome: <%= name %> [<%= role_name %>]</p>
-    <p>Username: <%= email %></p>
+    <p> Welcome: <%= user.name %> </p>
+    <p> You role is: <%= user.role_name %> </p>   
+    <p> Email: <%= user.email %></p>
 
     <hr>
 
@@ -18,6 +19,53 @@
             </a>
         </div>
     <% } %>
+    
+    <h2>Your Volunteered Service Projects</h2>
+    <% if (projects && projects.length > 0) { %>
+        <div class="table-responsive">
+            <table class="table volunteer-table">
+                <thead>
+                    <tr>
+                        <th>Project Title</th>
+                        <th>Organization</th>
+                        <th>Date</th>
+                        <th>Location</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <% projects.forEach(project => { %>
+                        <tr>
+                            <td>
+                                <a href="/projects/<%= project.project_id %>" class="project-link">
+                                    <%= project.title %>
+                                </a>
+                            </td>
+                            <td><%= project.organization_name %></td>
+                            <td><%= new Date(project.project_date).toLocaleDateString() %></td>
+                            <td><%= project.location %></td>
+                            <td>
+                                <form action="/projects/<%= project.project_id %>/unvolunteer?redirect=dashboard" method="POST" class="inline-form">
+                                    <button type="submit" class="btn btn-sm btn-danger btn-remove" onclick="return confirm('Are you sure you want to remove yourself from this project?');">
+                                        Remove
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    <% }) %>
+                </tbody>
+            </table>
+        </div>
+    <% } else { %>
+        <div class="empty-dashboard-state">
+            <p>You haven't signed up for any volunteer projects yet.</p>
+            <p><a href="/projects" class="browse-link">Browse open service projects</a> to get started!</p>
+        </div>
+    <% } %>
+
+<% if (user && user.role_name === 'admin') { %>
+    👥 <a href="/users" class="btn">See registered users</a>
+<% } %>
 
 </main>
 

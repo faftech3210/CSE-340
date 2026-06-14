@@ -230,9 +230,6 @@ INSERT INTO roles (role_name, role_description) VALUES
     ('user', 'Standard user with basic access'),
     ('admin', 'Administrator with full system access');
 
--- Verify the data was inserted
-SELECT * FROM roles;
-
 CREATE TABLE users (
     user_id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -253,3 +250,19 @@ JOIN roles r ON u.role_id = r.role_id;
 
 -- Delete the test user
 DELETE FROM users WHERE email = 'test@example.com';
+
+-- Create user_projects junction table with correct primary keys
+CREATE TABLE user_projects (
+    user_id INT NOT NULL,
+    project_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (user_id, project_id),
+    CONSTRAINT fk_volunteer_user
+        FOREIGN KEY (user_id) 
+        REFERENCES users(user_id) 
+        ON DELETE CASCADE,
+    CONSTRAINT fk_volunteer_project
+        FOREIGN KEY (project_id) 
+        REFERENCES projects(project_id) 
+        ON DELETE CASCADE
+);

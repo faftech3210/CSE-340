@@ -5,7 +5,9 @@ import { getAllProjects,
     getProjectDetails,
     getCategoriesByProjectId,
     getProjectsByCategoryId,
-    createProject, updateProject
+    createProject, updateProject,
+    isUserVolunteering,
+    addVolunteer, removeVolunteer
  } from '../models/projects.js';
 import { body, validationResult } from 'express-validator';
 import { getOrganizationByProjectId, getAllOrganizations } from "../models/organizations.js";
@@ -85,33 +87,78 @@ const processNewProjectForm = async (req, res) => {
 /* ***************************
  * Build project detail page
  * ************************** */
+// Handles displaying the project details, fetching linked data, and checking volunteer status
 const showProjectDetailsPage = async (req, res, next) => {
-    const projectId = parseInt(req.params.id)
-    const title = 'Service Project Details'
+    try {
+        const projectId = parseInt(req.params.id)
+        
+        // Fetch the main project details using the model function
+        const project = await getProjectDetails(projectId) 
 
-    const project =
-        await getProjectDetails(projectId)
+        if (!project) {
+            const error = new Error("Project not found")
+            error.status = 404
+            return next(error)
+        }
 
-    if (!project) {
-        const error = new Error("Project not found")
+        // Fetch the extra metadata the view expects
+        const organization = await getOrganizationByProjectId(projectId)
+        const categories = await getCategoriesByProjectId(projectId)
 
-        error.status = 404
+        // Default volunteer state to false
+        let isVolunteering = false
+        
+        // Check if a user is logged in and actively volunteering
+        if (req.session && req.session.user) {
+            isVolunteering = await isUserVolunteering(req.session.user.user_id, projectId)
+        }
 
-        return next(error)
+        // 5. Render the view with ALL the data it needs
+        res.render("project", {
+            title: project.title || 'Service Project Details',
+            project,
+            organization,
+            categories,
+            isVolunteering,
+            user: req.session.user || null
+        })
+        
+    } catch (error) {
+        next(error)
     }
+}
 
-    const organization =
-        await getOrganizationByProjectId(projectId)
+// Action to assign a user to a project
+const handleVolunteer = async (req, res, next) => {
+    try {
+        const projectId = req.params.id
+        const userId = req.session.user.user_id
 
-    const categories =
-        await getCategoriesByProjectId(projectId)
+        await addVolunteer(userId, projectId)
+        
+        res.redirect(`/project/${projectId}`)
+    } catch (error) {
+        next(error)
+    }
+}
 
-    res.render("project", {
-        title,
-        project,
-        organization,
-        categories
-    })
+// Action to unassign a user from a project
+const handleUnvolunteer = async (req, res, next) => {
+    try {
+        const projectId = req.params.id
+        const userId = req.session.user.user_id
+
+        await removeVolunteer(userId, projectId)
+
+        // Check query string parameter to handle contextual redirects smoothly
+        if (req.query.redirect === 'dashboard') {
+            res.redirect('/dashboard')
+        } else {
+            res.redirect(`/project/${projectId}`)
+        }
+    } catch (error) {
+        next(error)
+    }
 }
 
 /**
@@ -179,5 +226,7 @@ processNewProjectForm,
 showNewProjectForm, 
 projectValidation,
 showEditProjectForm,
-processEditProjectForm
+processEditProjectForm,
+handleUnvolunteer,
+handleVolunteer
 };

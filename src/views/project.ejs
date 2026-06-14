@@ -21,7 +21,28 @@
         ✏️<a href="/edit-project/<%= project.project_id %>" class="btn">Edit Project</a>
     <% } %>
 </div>
-
+<div class="volunteer-section">
+    <% if (typeof user !== 'undefined' && user) { %>
+        <% if (isVolunteering) { %>
+            <div class="alert alert-success">
+                <p><strong>✓ You are volunteering for this project!</strong> Thank you for your commitment.</p>
+                <form action="/projects/<%= project.project_id %>/unvolunteer" method="POST" class="cancel-volunteer-form">
+                    <button type="submit" class="btn btn-danger btn-cancel-signup">
+                        Cancel Volunteering Signup
+                    </button>
+                </form>
+            </div>
+        <% } else { %>
+            <form action="/projects/<%= project.project_id %>/volunteer" method="POST" class="volunteer-form">
+                <button type="submit" class="btn btn-primary btn-volunteer-action">
+                    Volunteer for this Project
+                </button>
+            </form>
+        <% } %>
+    <% } else { %>
+        <p class="text-muted"><em>Please <a href="/login">log in</a> to sign up as a volunteer for this service project.</em></p>
+    <% } %>
+</div>
 <hr>
 <h3>Categories</h3>
 
@@ -41,5 +62,6 @@
         ✏️<a href="/assign-categories/<%= project.project_id %>" class="btn">Edit Project Categories</a>
     <% } %>
 </div>
+<hr>
 
 <%- include("./partials/footer") %>

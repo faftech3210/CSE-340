@@ -75,7 +75,7 @@ nav a:hover::after {
 main {
     flex: 1;
     width: 90%; /* Uses fluid width for small viewports */
-    max-width: 700px; /* Consolidated duplicate main elements to this clean default */
+    max-width: 1000px; /* Consolidated duplicate main elements to this clean default */
     margin: 3rem auto;
     padding: 2rem;
     text-align: center;
@@ -228,7 +228,7 @@ main li {
 
 .addcat {
     margin: 1.5rem 0;
-    text-align: center; /* Centers layout instead of utilizing deep left-padding breaking viewports */
+    text-align: center; 
 }
 
 .addcat a {
@@ -277,7 +277,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    text-align: left; /* Aligns labels cleanly to the left */
+    text-align: left;
 }
 
 .form-group {
@@ -314,25 +314,33 @@ textarea {
 }
 
 button {
-    width: 100%;
+    width: 50%;
     padding: 1rem;
     border: none;
     border-radius: 10px;
     background: #2563eb;
     color: white;
     font-size: 1rem;
-    font-weight: 600;
+    font-weight: 500;
     cursor: pointer;
     transition: all 0.3s ease;
 }
 
 button:hover {
-    background: #1d4ed8; /* Fixed hover to darker blue instead of previous layout gray */
+    background: #f44747;
     transform: translateY(-2px);
 }
 
 button:active {
     transform: translateY(0);
+}
+
+.volunteer-section .volunteer-form .btn-volunteer-action {
+    margin-left: 10rem;
+}
+
+form[action="/login"] button[type="submit"] {
+    margin-left: 10rem;
 }
 
 /* User Management Table Styles */
@@ -388,8 +396,189 @@ footer {
 }
 
 /* ==========================================================================
+   Volunteer Dashboard & Table Feature Styles (Enhanced)
+   ========================================================================== */
+
+.volunteer-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-size: 0.95rem;
+}
+
+.volunteer-table thead tr {
+    background-color: #f4f4f4;
+    text-align: left;
+}
+
+/* Force headings to stay on one line and give them comfortable padding */
+.volunteer-table th {
+    padding: 12px 15px;
+    border-bottom: 2px solid #ddd;
+    font-weight: 600;
+    white-space: nowrap; /* 👈 Prevents "Project Title" from wrapping into two lines */
+}
+
+.volunteer-table tbody tr {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Give cell data padding so rows don't feel crowded */
+.volunteer-table td {
+    padding: 12px 15px;
+    vertical-align: middle;
+    white-space: nowrap;      
+    overflow: hidden;          
+    text-overflow: ellipsis;
+}
+
+/* Optional: Set explicit structural proportions for column distribution */
+.volunteer-table th:nth-child(1) { width: 30%; } /* Project Title */
+.volunteer-table th:nth-child(2) { width: 25%; } /* Organization */
+.volunteer-table th:nth-child(3) { width: 15%; white-space: nowrap; } /* Date */
+.volunteer-table th:nth-child(4) { width: 20%; } /* Location */
+.volunteer-table th:nth-child(5) { width: 10%; } /* Actions */
+
+.project-link {
+    color: #007bff;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.project-link:hover {
+    text-decoration: underline;
+}
+
+.inline-form {
+    display: inline;
+}
+
+.btn-remove {
+    display: inline-block; 
+    width: auto;
+    
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 6px 12px; 
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    white-space: nowrap;
+    transform: none; 
+}
+
+.btn-remove:hover {
+    background-color: #c82333;
+    transform: none; 
+}
+
+.table-responsive {
+    width: 100%;
+    overflow-x: auto; /* 👈 Adds a clean horizontal scrollbar ONLY if the screen is too narrow */
+    -webkit-overflow-scrolling: touch;
+    margin-bottom: 15px;
+}
+
+/* ==========================================================================
+   Automated Flash Message Timing Styles
+   ========================================================================== */
+.flash-message {
+    transition: opacity 0.6s ease, transform 0.6s ease, margin 0.6s ease, padding 0.6s ease, height 0.6s ease;
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* This class gets added dynamically by browser JavaScript */
+.flash-fade-out {
+    opacity: 0 !important;
+    transform: translateY(-10px) !important;
+    margin-top: 0 !important;
+    margin-bottom: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+}
+
+/* ==========================================================================
+   Navigation Base Styles (Large/Desktop Screens)
+   ========================================================================== */
+
+/* Hide the hamburger button entirely on large screens */
+.menu-toggle {
+    display: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    flex-direction: column;
+    gap: 6px;
+    padding: 5px;
+}
+
+.menu-toggle:hover {
+    background: transparent; 
+}
+
+.hamburger-bar {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background-color: #fff;
+    transition: all 0.3s ease-in-out;
+}
+
+/* ==========================================================================
    7. MEDIA QUERIES (RESPONSIVE ENGINE)
    ========================================================================== */
+
+/* ==========================================================================
+   Mobile Styles (Responsive Breakpoint)
+   ========================================================================== */
+@media (max-width: 768px) {
+    /* Reveal the hamburger button */
+    .menu-toggle {
+        display: flex;
+        z-index: 10;
+    }
+
+    /* Convert the horizontal menu into a hidden vertical dropdown */
+    .nav-links {
+        display: none; 
+        flex-direction: column;
+        width: 35%;
+        position: absolute;
+        top: 62px; /* Adjust based on your header's actual height */
+        left: 20px;
+        background-color: #7d690f;
+        padding: 1rem 0;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+
+    .nav-links li {
+        padding: 0.10rem 0;
+    }
+
+    /* JavaScript will toggle this class to show the menu */
+    .nav-links.active {
+        display: flex;
+    }
+
+    /* --- Hamburger Animation into an 'X' --- */
+    .menu-toggle.active .hamburger-bar:nth-child(1) {
+        transform: translateY(9px) rotate(45deg);
+    }
+
+    .menu-toggle.active .hamburger-bar:nth-child(2) {
+        opacity: 0;
+    }
+
+    .menu-toggle.active .hamburger-bar:nth-child(3) {
+        transform: translateY(-9px) rotate(-45deg);
+    }
+}
 
 /* Medium Screens (Tablets / Small Laptops) */
 @media screen and (max-width: 768px) {

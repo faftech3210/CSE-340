@@ -6,5 +6,36 @@
         
         </p>
     </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // 1. Existing Alert/Flash Message Logic
+            const alerts = document.querySelectorAll('.flash-message');
+            alerts.forEach(alert => {
+                setTimeout(() => {
+                    alert.classList.add('flash-fade-out');
+                    setTimeout(() => {
+                        alert.remove();
+                    }, 600); 
+                }, 4000);
+            });
+
+            // 2. New Mobile Hamburger Navigation Logic
+            const menuToggle = document.querySelector('.menu-toggle');
+            const navLinks = document.querySelector('.nav-links');
+
+            if (menuToggle && navLinks) {
+                menuToggle.addEventListener('click', () => {
+                    // Toggle the dropdown menu visibility
+                    navLinks.classList.toggle('active');
+                    // Toggle the hamburger icon animation state
+                    menuToggle.classList.toggle('active');
+                    
+                    // Optional/Accessibility: Update aria-expanded state
+                    const isExpanded = menuToggle.classList.contains('active');
+                    menuToggle.setAttribute('aria-expanded', isExpanded);
+                });
+            }
+        });
+    </script>
 </body>
 </html>

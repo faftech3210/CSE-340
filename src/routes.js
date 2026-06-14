@@ -8,7 +8,9 @@ import {
     showNewProjectForm, 
     projectValidation, 
     showEditProjectForm, 
-    processEditProjectForm, 
+    processEditProjectForm,
+    handleUnvolunteer,
+    handleVolunteer 
 } from './controllers/projects.js';
 import { 
     showCategoriesPage, 
@@ -77,6 +79,10 @@ router.post('/new-project', requireRole('admin'), projectValidation, processNewP
 //  Admin Protected: Edit Existing Project
 router.get('/edit-project/:id', requireRole('admin'), showEditProjectForm);
 router.post('/edit-project/:id', requireRole('admin'), projectValidation, processEditProjectForm);
+
+// Triggers form buttons
+router.post('/projects/:id/volunteer', requireLogin, handleVolunteer)
+router.post('/projects/:id/unvolunteer', requireLogin, handleUnvolunteer)
 
 
 // --- Category Routes ---

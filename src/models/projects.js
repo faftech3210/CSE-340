@@ -189,6 +189,62 @@ const updateProject = async (projectId, title, description, location, project_da
     }
 };
 
+// Check if a user is already volunteering for a specific project
+const isUserVolunteering = async (userId, projectId) => {
+    const query = `
+        SELECT 1 
+        FROM public.user_projects 
+        WHERE user_id = $1 AND project_id = $2;
+    `
+
+    const result = await db.query(query, [userId, projectId])
+
+    return result.rowCount > 0;
+}
+
+// Add a volunteer record to a project
+const addVolunteer = async (userId, projectId) => {
+    const query = `
+        INSERT INTO public.user_projects (user_id, project_id) 
+        VALUES ($1, $2) 
+        ON CONFLICT (user_id, project_id) DO NOTHING;
+    `
+
+    const result = await db.query(query, [userId, projectId])
+
+    return result
+}
+
+// Remove a volunteer record from a project
+const removeVolunteer = async (userId, projectId) => {
+    const query = `
+        DELETE FROM public.user_projects 
+        WHERE user_id = $1 AND project_id = $2;
+    `
+
+    const result = await db.query(query, [userId, projectId])
+
+    return result
+}
+
+// Retrieve all projects a specific user has signed up for
+const getProjectsByUser = async (userId) => {
+    const query = `
+        SELECT p.project_id, p.title, p.description, p.location, p.project_date, o.name AS organization_name 
+        FROM public.projects p
+        JOIN public.user_projects up 
+            ON p.project_id = up.project_id
+        JOIN public.organizations o 
+            ON p.organization_id = o.organization_id
+        WHERE up.user_id = $1
+        ORDER BY p.project_date ASC;
+    `
+
+    const result = await db.query(query, [userId])
+
+    return result.rows
+}
+
 export {
     getAllProjects,
     getProjectsByOrganizationId,
@@ -197,5 +253,10 @@ export {
     getCategoriesByProjectId,
     getProjectsByCategoryId,
     createProject,
-    updateProject
+    updateProject,
+    getProjectsByUser,
+    removeVolunteer,
+    addVolunteer,
+    isUserVolunteering
+
 }

@@ -1,6 +1,7 @@
 import bcrypt from 'bcrypt';
 import { createUser, authenticateUser } from '../models/users.js';
 import db from '../models/db.js';
+import { getProjectsByUser } from '../models/projects.js';
 
 const showUserRegistrationForm = (req, res) => {
     res.render('register', { title: 'Register' });
@@ -142,15 +143,34 @@ const requireRole = (role) => {
 };
 
 
-const showDashboard = (req, res) => {
-    const user = req.session.user;
-    res.render('dashboard', { 
-        title: 'Dashboard',
-        name: user.name,
-        email: user.email,
-        role_name: user.role_name
-    });
-};
+// const showDashboard = (req, res) => {
+//     const user = req.session.user;
+//     res.render('dashboard', { 
+//         title: 'Dashboard',
+//         name: user.name,
+//         email: user.email,
+//         role_name: user.role_name
+//     });
+// };
+
+// Renders the user dashboard with their customized list of signed-up projects
+const showDashboard = async (req, res, next) => {
+    try {
+        const user = req.session.user.user_id
+        const volunteeredProjects = await getProjectsByUser(user)
+
+        res.render('dashboard', {
+            title: 'Your Dashboard',
+            user: req.session.user,
+            name: user.name,
+            projects: volunteeredProjects,
+            email: user.email,
+            role_name: user.role_name
+        })
+    } catch (error) {
+        next(error)
+    }
+}
 
 export { 
     showUserRegistrationForm, 

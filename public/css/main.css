@@ -551,8 +551,8 @@ footer {
         position: absolute;
         top: 62px; /* Adjust based on your header's actual height */
         left: 20px;
-        background-color: #7d690f;
-        padding: 1rem 0;
+        background-color: #daab04;
+        padding: 0.10rem 0;
         text-align: center;
         box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
